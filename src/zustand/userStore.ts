@@ -4,23 +4,21 @@ import { IUser } from '../models/user-DTO';
 import { mmkvStorage } from '../storage/mmkvStorage';
 
 interface UserState {
-  user: IUser | null;
+  information: IUser | null;
 }
 
 interface UserStore extends UserState {
-  setUser: (user: IUser) => void;
-  logout: () => void;
+  setInformation: (information: IUser) => void;
 }
 
 export const useUserStore = create<UserStore>()(
   persist(
     set => ({
-      user: null,
-      setUser: user => set({ user }),
-      logout: () => set({ user: null }),
+      information: null,
+      setInformation: information => set({ information }),
     }),
     {
-      name: 'user',
+      name: 'information',
       storage: createJSONStorage(() => mmkvStorage),
     }
   )

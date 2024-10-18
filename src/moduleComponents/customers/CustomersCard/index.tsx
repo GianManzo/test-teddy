@@ -46,13 +46,7 @@ export const CustomersCard = ({}: ICustomersCardProps) => {
         padding: 15,
       }}
     >
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          marginTop: 10,
-        }}
-      >
+      <View style={styles.cardContent}>
         <Typography style={{ marginBottom: 10 }}>
           Salário: R$3.500,00
         </Typography>
@@ -67,7 +61,13 @@ const stylesheet = createStyleSheet(theme => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%', // Ocupa toda a largura do card
-    marginTop: 10, // Espaço entre o conteúdo do card e o footer
+    width: '100%',
+    marginTop: 10,
+  },
+
+  cardContent: {
+    flex: 1,
+    alignItems: 'center',
+    marginTop: 10,
   },
 }));
