@@ -5,6 +5,7 @@ import { XStack } from 'tamagui';
 import { Typography } from '@components/atoms/Typography';
 import { Logo } from '@components/atoms';
 import { useTheme } from '@contexts/theme-provider';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const Header = ({
   avatar,
@@ -14,6 +15,7 @@ export const Header = ({
   ...rest
 }: IHeaderProps) => {
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
   return (
     <XStack
       shadowOffset={{ width: 0, height: 2 }}
@@ -23,7 +25,9 @@ export const Header = ({
       justifyContent="space-between"
       alignItems="center"
       w="100%"
-      paddingVertical={spacings.regular}
+      paddingBottom={spacings.regular}
+      paddingTop={insets.top}
+      paddingHorizontal={spacings.regular}
       {...rest}
     >
       <XStack alignItems="center">

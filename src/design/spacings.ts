@@ -1,4 +1,4 @@
-type Spacing = {
+export type Spacing = {
   huge: number;
   big: number;
   regular: number;

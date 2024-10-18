@@ -10,12 +10,14 @@ import {
 import { Theme } from 'tamagui';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import { UnistylesRuntime } from 'react-native-unistyles';
+import { Spacing, spacings } from '@design/spacings';
 
 type Theme = 'light' | 'dark';
 
 export const ThemeContext = createContext<{
   theme: Theme;
   colors: IColor;
+  spacings: Spacing;
   changeTheme: (theme: Theme) => void;
 } | null>(null);
 
@@ -42,6 +44,7 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
   return (
     <ThemeContext.Provider
       value={{
+        spacings,
         theme,
         colors: theme === 'light' ? colors : darkColors,
         changeTheme: theme => setTheme(theme),

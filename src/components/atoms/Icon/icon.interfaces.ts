@@ -1,6 +1,8 @@
 import { StyleProp, TextStyle } from 'react-native';
 
 export type IconNames =
+  | 'delete'
+  | 'edit'
   | 'customers'
   | 'menu'
   | 'plus'

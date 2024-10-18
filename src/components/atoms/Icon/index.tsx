@@ -9,6 +9,8 @@ import {
   Cat,
   Menu,
   User2,
+  Pencil,
+  Trash2,
 } from '@tamagui/lucide-icons';
 import { Pressable } from 'react-native';
 
@@ -26,6 +28,10 @@ export const Icon = ({
     switch (name) {
       case 'customers':
         return <User2 {...props} />;
+      case 'edit':
+        return <Pencil {...props} />;
+      case 'delete':
+        return <Trash2 {...props} />;
       case 'plus':
         return <Plus {...props} />;
       case 'menu':

@@ -12,6 +12,8 @@ import {
 import { Image, View } from 'tamagui';
 
 import CustomersScreen from './customers';
+import ProductsScreen from './products';
+import HomeScreen from './home';
 
 export default function SignedLayout() {
   const { isLogged } = useAuth();
@@ -42,10 +44,6 @@ export default function SignedLayout() {
                 onPress={() => props.navigation.toggleDrawer()}
               />
             }
-            style={{
-              paddingHorizontal: spacings.regular,
-              paddingTop: insets.top,
-            }}
           />
         ),
       }}
@@ -60,7 +58,7 @@ export default function SignedLayout() {
 
       <Drawer.Screen
         name="Home"
-        component={() => <Typography>Home</Typography>}
+        component={HomeScreen}
         options={{
           drawerIcon: ({ color }) => <Icon color={color} name="home" />,
         }}
@@ -68,7 +66,7 @@ export default function SignedLayout() {
 
       <Drawer.Screen
         name="Produtos"
-        component={() => <Typography>Produtos</Typography>}
+        component={ProductsScreen}
         options={{
           drawerIcon: ({ color }) => <Icon color={color} name="customers" />,
         }}
