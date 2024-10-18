@@ -7,26 +7,47 @@ import {
   Home,
   User,
   Cat,
+  Menu,
+  User2,
 } from '@tamagui/lucide-icons';
+import { Pressable } from 'react-native';
 
-export const Icon = ({ color, name, size = 20, style, testID }: IconProps) => {
+export const Icon = ({
+  color,
+  name,
+  size = 20,
+  style,
+  testID,
+  onPress,
+}: IconProps) => {
   const { colors } = useTheme();
   const props = { color: color ?? colors.fullColor, size, style, testID };
-  switch (name) {
-    case 'plus':
-      return <Plus {...props} />;
-    case 'alert-circle':
-      return <AlertCircle {...props} />;
-    case 'bell':
-      return <Bell {...props} />;
-    case 'home':
-      return <Home {...props} />;
-    case 'user':
-      return <User {...props} />;
-    case 'cat':
-      return <Cat {...props} />;
+  const renderIcon = () => {
+    switch (name) {
+      case 'customers':
+        return <User2 {...props} />;
+      case 'plus':
+        return <Plus {...props} />;
+      case 'menu':
+        return <Menu {...props} />;
+      case 'alert-circle':
+        return <AlertCircle {...props} />;
+      case 'bell':
+        return <Bell {...props} />;
+      case 'home':
+        return <Home {...props} />;
+      case 'user':
+        return <User {...props} />;
+      case 'cat':
+        return <Cat {...props} />;
+      default:
+        return <AlertCircle {...props} />;
+    }
+  };
 
-    default:
-      return <AlertCircle {...props} />;
-  }
+  return (
+    <Pressable onPress={onPress} testID={testID} style={style}>
+      {renderIcon()}
+    </Pressable>
+  );
 };

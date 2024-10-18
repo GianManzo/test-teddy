@@ -1,81 +1,78 @@
-import { Icon } from '@components/atoms';
+import { Icon, Logo, Typography } from '@components/atoms';
 import { Header } from '@components/molecules/Header';
 import { useAuth } from '@contexts/auth-provider';
 import { useTheme } from '@contexts/theme-provider';
 import { spacings } from '@design/spacings';
 import { Redirect, Tabs } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { View } from 'tamagui';
+import {
+  createDrawerNavigator,
+  DrawerItemList,
+} from '@react-navigation/drawer';
+import { Image, View } from 'tamagui';
+
+import CustomersScreen from './customers';
 
 export default function SignedLayout() {
   const { isLogged } = useAuth();
   const { colors } = useTheme();
+  const Drawer = createDrawerNavigator();
 
   const insets = useSafeAreaInsets();
 
-  if (!isLogged) {
-    return <Redirect href="/(auth)/sign-in" />;
-  }
+  // if (isLogged) {
+  //   return <Redirect href="/(signed)/customers" />;
+  // }
 
   return (
-    <View
-      style={{
-        backgroundColor: colors.background,
-        height: '100%',
-        paddingTop: insets.top + spacings.regular,
+    <Drawer.Navigator
+      initialRouteName="Clientes"
+      screenOptions={{
+        drawerPosition: 'right',
+        drawerStyle: {
+          backgroundColor: colors.background,
+          width: 280,
+        },
+        header: props => (
+          <Header
+            sideElements={
+              <Icon
+                size={24}
+                name="menu"
+                onPress={() => props.navigation.toggleDrawer()}
+              />
+            }
+            style={{
+              paddingHorizontal: spacings.regular,
+              paddingTop: insets.top,
+            }}
+          />
+        ),
       }}
     >
-      <Header
-        content="Hello, @VictorBDias"
-        avatar="https://i.pinimg.com/564x/ec/b3/d1/ecb3d1d08927b6cec14f34b4e3b19d2b.jpg"
-        sideElements={<Icon name="bell" />}
-        style={{
-          paddingHorizontal: spacings.regular,
+      <Drawer.Screen
+        name="Clientes"
+        component={CustomersScreen}
+        options={{
+          drawerIcon: ({ color }) => <Icon color={color} name="customers" />,
         }}
       />
 
-      <Tabs
-        sceneContainerStyle={{
-          backgroundColor: colors.background,
-          paddingHorizontal: spacings.regular,
-          marginTop: spacings.regular,
+      <Drawer.Screen
+        name="Home"
+        component={() => <Typography>Home</Typography>}
+        options={{
+          drawerIcon: ({ color }) => <Icon color={color} name="home" />,
         }}
-        screenOptions={{
-          headerShown: false,
-          tabBarStyle: {
-            shadowColor: 'transparent',
-            backgroundColor: colors.background,
-            borderTopColor: colors.background,
-            borderColor: colors.background,
-            gap: 4,
-          },
+      />
+
+      <Drawer.Screen
+        name="Produtos"
+        component={() => <Typography>Produtos</Typography>}
+        options={{
+          drawerIcon: ({ color }) => <Icon color={color} name="customers" />,
         }}
-      >
-        <Tabs.Screen
-          name="home/index"
-          options={{
-            tabBarLabel: 'Home',
-            tabBarIcon: ({ color }) => <Icon color={color} name="home" />,
-          }}
-        />
-
-        <Tabs.Screen
-          name="slug/[slug]"
-          initialParams={{ slug: 'slug' }}
-          options={{
-            tabBarLabel: 'Slug',
-            tabBarIcon: ({ color }) => <Icon color={color} name="cat" />,
-          }}
-        />
-
-        <Tabs.Screen
-          name="profile/index"
-          options={{
-            tabBarLabel: 'Profile',
-            tabBarIcon: ({ color }) => <Icon color={color} name="user" />,
-          }}
-        />
-      </Tabs>
-    </View>
+      />
+    </Drawer.Navigator>
   );
 }

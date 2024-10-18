@@ -8,8 +8,8 @@ type Spacing = {
 };
 
 export const spacings: Spacing = {
-  huge: 40,
-  big: 24,
+  huge: 32,
+  big: 20,
   regular: 16,
   true: 16,
   small: 8,

@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Slot } from 'expo-router';
 import AuthProvider from '../contexts/auth-provider';
@@ -7,6 +8,7 @@ import { TamaguiProvider } from 'tamagui';
 import tamaguiConfig from '../tamagui.config';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import ThemeProvider from '@contexts/theme-provider';
+
 import '../unistyles';
 
 export default function RootLayout() {

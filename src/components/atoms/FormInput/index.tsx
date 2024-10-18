@@ -16,8 +16,10 @@ export const FormInput = ({
   helperText,
   errorMessage,
   inputMode = 'text',
+  textAlignLabel = 'center',
   type,
   style,
+  variantLabel = 'title',
   ...rest
 }: IFormInputProps) => {
   const { colors } = useTheme();
@@ -33,17 +35,22 @@ export const FormInput = ({
           <View w="100%">
             <Stack>
               {label && (
-                <Typography style={{ marginBottom: spacings.tiny }}>
+                <Typography
+                  variant={variantLabel}
+                  textAlign={textAlignLabel}
+                  style={{ marginBottom: spacings.big }}
+                >
                   {label}
                 </Typography>
               )}
               <Input
+                size="$6"
                 placeholder={placeholder}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 placeholderTextColor={colors.halfColor}
                 value={value}
-                borderRadius={8}
+                borderRadius={4}
                 inputMode={inputMode}
                 secureTextEntry={type === 'password'}
                 style={{

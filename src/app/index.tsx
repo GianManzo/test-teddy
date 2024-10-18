@@ -18,11 +18,13 @@ export default function SignedLayout() {
         <Spinner size="large" />
       </View>
     );
+  } else {
+    return <Redirect href="/(auth)/sign-in" />;
   }
 
-  if (!isLogged) {
-    return <Redirect href="/(auth)/sign-in" />;
-  } else {
-    return <Redirect href="/(signed)/home" />;
-  }
+  // if (isLogged) {
+  //   return <Redirect href="/(auth)/sign-in" />;
+  // } else {
+  //   return <Redirect href="/(signed)/home" />;
+  // }
 }

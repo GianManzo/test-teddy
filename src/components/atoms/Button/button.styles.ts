@@ -82,7 +82,7 @@ export const useButtonStyles = (
   const getSize = (): ISizeStyles => {
     switch (size) {
       case 'big':
-        return { textVariant: 'regular', styledIconSize: 24, height: 51 };
+        return { textVariant: 'title', styledIconSize: 24, height: 51 };
 
       case 'slim':
         return {
@@ -120,7 +120,7 @@ export const useButtonStyles = (
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: 'row',
-      borderRadius: 8,
+      borderRadius: 4,
       height,
       minWidth: content ? 40 : height,
       paddingHorizontal: spacings.small,

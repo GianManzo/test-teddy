@@ -3,7 +3,8 @@ import { spacings } from '@design/spacings';
 import { IHeaderProps } from './header.interface';
 import { XStack } from 'tamagui';
 import { Typography } from '@components/atoms/Typography';
-import { Avatar } from '@components/atoms';
+import { Logo } from '@components/atoms';
+import { useTheme } from '@contexts/theme-provider';
 
 export const Header = ({
   avatar,
@@ -12,18 +13,21 @@ export const Header = ({
   sideElements,
   ...rest
 }: IHeaderProps) => {
+  const { colors } = useTheme();
   return (
     <XStack
-      backgroundColor={'$background'}
+      shadowOffset={{ width: 0, height: 2 }}
+      shadowColor="black"
+      shadowOpacity={0.04}
+      backgroundColor={colors.surface}
       justifyContent="space-between"
       alignItems="center"
       w="100%"
+      paddingVertical={spacings.regular}
       {...rest}
     >
       <XStack alignItems="center">
-        {avatar && (
-          <Avatar src="https://i.pinimg.com/736x/0b/0d/4c/0b0d4cf5c497566defb97a10d81526f5.jpg" />
-        )}
+        <Logo />
 
         {content && (
           <Typography style={{ marginLeft: spacings.small }}>

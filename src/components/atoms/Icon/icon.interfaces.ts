@@ -1,6 +1,8 @@
 import { StyleProp, TextStyle } from 'react-native';
 
 export type IconNames =
+  | 'customers'
+  | 'menu'
   | 'plus'
   | 'alert-circle'
   | 'bell'
@@ -9,6 +11,7 @@ export type IconNames =
   | 'cat';
 
 export interface IconProps {
+  onPress?: () => void;
   testID?: string;
   color?: string;
   name: IconNames;

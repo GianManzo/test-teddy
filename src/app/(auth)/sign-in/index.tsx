@@ -26,13 +26,9 @@ export default function SignInScreen() {
 
   const isLoading = status === 'pending' && isSubmitting;
 
-  const onSubmit = handleSubmit(async ({ uid, password }) => {
-    const result = await signInAPi({
-      uid,
-      password,
-    });
-    if (result) {
-      router.push('/(signed)/home');
+  const onSubmit = handleSubmit(async ({ name }) => {
+    if (name) {
+      router.push('/(signed)/customers');
     }
   });
 
@@ -41,30 +37,21 @@ export default function SignInScreen() {
       <Form onSubmit={onSubmit}>
         <FormInput
           control={control}
-          name={'uid'}
-          label={'Uid'}
-          placeholder={'Input you uid'}
+          name={'name'}
+          label={'Olá, seja bem-vindo!'}
+          placeholder={'Digite o seu nome:'}
           required={true}
-          errors={errors.uid}
-          errorMessage={errors.uid?.message}
-        />
-        <FormInput
-          control={control}
-          name={'password'}
-          label={'Password'}
-          placeholder={'Input you password'}
-          required={true}
-          errors={errors.password}
-          errorMessage={errors.password?.message}
-          style={{ marginTop: spacings.regular }}
+          errors={errors.name}
+          errorMessage={errors.name?.message}
         />
 
         <Form.Trigger asChild>
           <Button
+            size="big"
             style={{ marginTop: spacings.big }}
             isLoading={isLoading}
             onPress={onSubmit}
-            content={'Sign In'}
+            content={'Entrar'}
           />
         </Form.Trigger>
       </Form>

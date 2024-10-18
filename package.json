@@ -1,4 +1,7 @@
 {
+  "resolutions": {
+    "@react-navigation/native": "6.1.18"
+  },
   "name": "mobile-tmp",
   "version": "1.0.0",
   "main": "expo-router/entry",
@@ -14,6 +17,8 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@react-native-firebase/app": "^19.2.2",
+    "@react-navigation/drawer": "^6.7.2",
+    "@react-navigation/native": "^6.1.18",
     "@tamagui/config": "^1.94.5",
     "@tamagui/lucide-icons": "^1.94.5",
     "@tanstack/react-query": "^5.28.9",
@@ -32,6 +37,7 @@
     "react-hook-form": "^7.51.2",
     "react-i18next": "^14.1.0",
     "react-native": "0.73.6",
+    "react-native-gesture-handler": "^2.20.0",
     "react-native-mmkv": "^2.12.2",
     "react-native-navigation-bar-color": "^2.0.2",
     "react-native-reanimated": "^3.8.1",
@@ -46,7 +52,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "@tanstack/eslint-plugin-query": "^5.28.6"
+    "@tanstack/eslint-plugin-query": "^5.28.6",
+    "@types/react-native": "^0.73.0"
   },
   "private": true
 }
