@@ -41,7 +41,7 @@ export const colors: IColor = {
   warning: '#FCC325',
   accentText: '#fff',
   primaryText: '#fff',
-  opaqueSurface: '#f5f5f5cc',
+  opaqueSurface: '#D9D9D9',
 };
 
 export const darkColors: IColor = {

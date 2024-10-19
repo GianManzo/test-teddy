@@ -1,12 +1,16 @@
 import { Controller } from 'react-hook-form';
-import { IFormInputProps, InputSize } from './formInput.interface';
+
 import { Input, Stack, View } from 'tamagui';
-import { Typography } from '../Typography';
+
 import { spacings } from '@design/spacings';
 import { useTheme } from '@contexts/theme-provider';
-import { Icon } from '../Icon';
+import { Icon, Typography } from '@components/atoms';
+import {
+  IFormInputProps,
+  InputSize,
+} from '@components/atoms/FormInput/formInput.interface';
 
-export const FormInput = ({
+export const CurrencyInput = ({
   inputSize = 'regular',
   control,
   name,
@@ -39,7 +43,14 @@ export const FormInput = ({
         return '$3';
       case 'big':
         return '$6';
+      default:
+        return '$4';
     }
+  };
+
+  const formatCurrencyInput = (value: string) => {
+    const numericValue = value.replace(/\D/g, '');
+    return numericValue ? `R$ ${numericValue}` : '';
   };
 
   return (
@@ -67,7 +78,7 @@ export const FormInput = ({
                 size={handleInputSize(inputSize)}
                 placeholder={placeholder}
                 onBlur={onBlur}
-                onChangeText={onChange}
+                onChangeText={text => onChange(formatCurrencyInput(text))}
                 placeholderTextColor={inputPlaceholderColor}
                 value={value}
                 borderRadius={inputBorderRadius}

@@ -57,7 +57,9 @@ export const useButtonStyles = (
       variant: 'primary',
       style: {
         color: colors.primaryText,
-        backgroundColor: backgroundColor || colors.primary,
+        backgroundColor: isDisabled
+          ? colors.hoverColor
+          : backgroundColor || colors.primary,
       },
     },
     {
@@ -71,7 +73,7 @@ export const useButtonStyles = (
       style: {
         color: colors.primary,
         borderWidth: 1.5,
-        borderColor: transparentize(0.85, backgroundColor || colors.primary),
+        borderColor: transparentize(0, backgroundColor || colors.primary),
       },
     },
   ];

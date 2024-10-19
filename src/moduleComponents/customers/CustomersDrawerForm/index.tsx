@@ -1,116 +1,140 @@
 import { Button, FormInput, Typography } from '@components/atoms';
+import { CurrencyInput } from '@components/atoms/CurrencyInput';
 import { useTheme } from '@contexts/theme-provider';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { customersValidator, CustomersValidator } from '@validations/customers';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, UseFormReset } from 'react-hook-form';
 import { Modal, TouchableOpacity, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { Form } from 'tamagui';
 
-interface ICustomersCardProps {}
+interface ICustomersCardProps {
+  showFormModal: boolean;
+  toggleModal: (reset: UseFormReset<CustomersValidator>) => void;
+}
 
-export const CustomersDrawerForm = ({}: ICustomersCardProps) => {
+export const CustomersDrawerForm = ({
+  showFormModal,
+  toggleModal,
+}: ICustomersCardProps) => {
   const { colors, spacings } = useTheme();
   const { styles } = useStyles(stylesheet);
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
 
   const {
     formState: { errors, isDirty, isSubmitting, isValid },
     handleSubmit,
     control,
+    reset,
   } = useForm<CustomersValidator>({
     resolver: zodResolver(customersValidator),
     mode: 'onChange',
   });
 
   const onSubmit = handleSubmit(async ({ name, salary, companyValue }) => {
+    const formattedSalary = removeCurrencyFormatting(salary);
+    const formattedCompanyValue = removeCurrencyFormatting(companyValue);
     console.log({
       name,
-      salary,
-      companyValue,
+      formattedSalary,
+      formattedCompanyValue,
     });
-    toggleModal();
+    toggleModal(reset);
   });
 
+  const removeCurrencyFormatting = (value: string) => {
+    return value.replace(/\D/g, '');
+  };
+
   return (
-    <View style={styles.screen}>
-      <TouchableOpacity onPress={toggleModal}>
-        <Typography style={styles.buttonText}>Criar Cliente</Typography>
-      </TouchableOpacity>
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isModalVisible}
-        onRequestClose={toggleModal}
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={showFormModal}
+      onRequestClose={() => toggleModal(reset)}
+    >
+      <TouchableOpacity
+        style={styles.modalOverlay}
+        onPress={() => toggleModal(reset)}
+        activeOpacity={1}
       >
-        <TouchableOpacity
-          style={styles.modalOverlay}
-          onPress={toggleModal}
-          activeOpacity={1}
-        >
-          <TouchableOpacity
-            activeOpacity={1}
-            style={styles.drawer}
-            onPress={() => {}}
-          >
-            <View style={styles.handle} />
-            <Typography style={styles.title}>Criar cliente</Typography>
-            <Form onSubmit={onSubmit}>
-              <FormInput
-                control={control}
-                name={'name'}
-                label={'Nome'}
-                textAlignLabel="left"
-                variantLabel="regular"
-                placeholder={'Digite o seu nome:'}
-                required={true}
-                errors={errors.name}
-                errorMessage={errors.name?.message}
-              />
+        <TouchableOpacity activeOpacity={1} style={styles.drawer}>
+          <View style={styles.handle} />
+          <Typography variant="subTitle" fontWeight="bold" style={styles.title}>
+            Criar cliente
+          </Typography>
+          <Form onSubmit={onSubmit}>
+            <FormInput
+              name={'name'}
+              inputTextColor={colors.surface}
+              inputPlaceholderColor={colors.opaqueSurface}
+              inputBorderRadius={12}
+              inputBackgroundColor="#7A7A7A"
+              inputBorderColor={colors.surface}
+              colorLabel={colors.accentText}
+              control={control}
+              label={'Nome'}
+              textAlignLabel="left"
+              variantLabel="regular"
+              placeholder={'Digite o seu nome:'}
+              required={true}
+              errors={errors.name}
+              errorMessage={errors.name?.message}
+            />
 
-              <FormInput
-                control={control}
-                name={'salary'}
-                label={'Salário'}
-                textAlignLabel="left"
-                variantLabel="regular"
-                placeholder={'Digite o salário:'}
-                required={true}
-                errors={errors.salary}
-                errorMessage={errors.salary?.message}
-              />
+            <CurrencyInput
+              name={'salary'}
+              inputTextColor={colors.surface}
+              inputPlaceholderColor={colors.opaqueSurface}
+              inputBorderRadius={12}
+              inputBackgroundColor="#7A7A7A"
+              inputBorderColor={colors.surface}
+              colorLabel={colors.accentText}
+              style={{ marginTop: spacings.huge }}
+              inputMode="numeric"
+              control={control}
+              label={'Salário'}
+              textAlignLabel="left"
+              variantLabel="regular"
+              placeholder={'Digite o salário:'}
+              required={true}
+              errors={errors.salary}
+              errorMessage={errors.salary?.message}
+            />
 
-              <FormInput
-                control={control}
-                name={'companyValue'}
-                label={'Valor da empresa'}
-                textAlignLabel="left"
-                variantLabel="regular"
-                placeholder={'Digite o valor da empresa:'}
-                required={true}
-                errors={errors.companyValue}
-                errorMessage={errors.companyValue?.message}
+            <CurrencyInput
+              name={'companyValue'}
+              inputTextColor={colors.surface}
+              inputPlaceholderColor={colors.opaqueSurface}
+              inputBorderRadius={12}
+              inputBackgroundColor="#7A7A7A"
+              inputBorderColor={colors.surface}
+              colorLabel={colors.accentText}
+              style={{ marginTop: spacings.huge }}
+              inputMode="numeric"
+              control={control}
+              label={'Valor da empresa'}
+              textAlignLabel="left"
+              variantLabel="regular"
+              placeholder={'Digite o valor da empresa:'}
+              required={true}
+              errors={errors.companyValue}
+              errorMessage={errors.companyValue?.message}
+            />
+            <Form.Trigger asChild>
+              <Button
+                textStyle={{ fontWeight: 'bold', fontSize: 18 }}
+                size="big"
+                style={{ marginTop: spacings.huge, borderRadius: 12 }}
+                onPress={onSubmit}
+                content={'Criar cliente'}
+                isDisabled={!isValid}
               />
-              <Form.Trigger asChild marginBottom={spacings.huge * 2}>
-                <Button
-                  size="regular"
-                  style={{ marginTop: spacings.big }}
-                  onPress={onSubmit}
-                  content={'Entrar'}
-                  isDisabled={!isValid}
-                />
-              </Form.Trigger>
-            </Form>
-          </TouchableOpacity>
+            </Form.Trigger>
+          </Form>
         </TouchableOpacity>
-      </Modal>
-    </View>
+      </TouchableOpacity>
+    </Modal>
   );
 };
 
@@ -127,25 +151,25 @@ const stylesheet = createStyleSheet(theme => ({
   modalOverlay: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   drawer: {
     backgroundColor: '#7A7A7A',
-    padding: 20,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    paddingTop: 32,
+    paddingBottom: 64,
+    paddingHorizontal: 32,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   handle: {
-    width: 50,
+    width: 24,
     height: 4,
-    backgroundColor: '#ccc',
+    backgroundColor: theme.colors.opaqueSurface,
     borderRadius: 2,
     alignSelf: 'center',
-    marginBottom: 15,
+    marginBottom: theme.spacings.regular,
   },
   title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    color: theme.colors.accentText,
+    marginBottom: theme.spacings.big,
   },
 }));

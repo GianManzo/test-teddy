@@ -39,7 +39,6 @@ export const CustomersCard = ({}: ICustomersCardProps) => {
       props={{
         width: '100%',
         minHeight: 138,
-        maxWidth: 350,
         backgroundColor: colors.surface,
         borderRadius: 4,
         marginVertical: spacings.big,

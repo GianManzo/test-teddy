@@ -10,6 +10,8 @@ import { FormInput } from '@components/atoms/FormInput';
 import { signInAPi } from '@apis/auth/sign-in';
 import { Form } from 'tamagui';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
+import { useTheme } from '@contexts/theme-provider';
+import { Typography } from '@components/atoms';
 
 export default function SignInScreen() {
   const router = useRouter();
@@ -20,6 +22,7 @@ export default function SignInScreen() {
   } = useForm<AuthValidator>({
     resolver: zodResolver(authValidator),
   });
+  const { colors } = useTheme();
   const { login, status } = useAuth();
 
   const { styles } = useStyles(stylesheet);
@@ -34,11 +37,13 @@ export default function SignInScreen() {
 
   return (
     <View style={styles.container}>
-      <Form onSubmit={onSubmit}>
+      <Typography variant="title">Olá, seja bem-vindo!</Typography>
+      <Form style={{ width: '100%', maxWidth: 350 }} onSubmit={onSubmit}>
         <FormInput
+          inputBorderColor={colors.opaqueSurface}
+          inputSize="big"
           control={control}
           name={'name'}
-          label={'Olá, seja bem-vindo!'}
           placeholder={'Digite o seu nome:'}
           required={true}
           errors={errors.name}
