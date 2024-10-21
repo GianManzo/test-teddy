@@ -32,6 +32,22 @@
 
 **_React Native_** The system will have an initial screen where the user can enter the name and then will be redirected to a screen with the list of all registered customers, where they can register, select, update and delete customers, in addition to a screen to view the selected customers. :)
 
+## How to use
+
+You must have on your PC:
+
+- Yarn
+- Node
+- Brew
+- Cocoa pods
+- Ruby
+
+After cloning the repository:
+
+- Yarn
+- Para iOS: /iOS pod install
+- Yarn iOS
+
 ## Includes
 
 - expo
