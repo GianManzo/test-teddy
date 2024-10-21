@@ -1,15 +1,21 @@
-import { ICustomer } from '@apis/customers/customers';
+import { IClients } from '@apis/clients/clients';
 import { Icon, Typography } from '@components/atoms';
 import { Card } from '@components/atoms/Card';
 import { useTheme } from '@contexts/theme-provider';
 import { View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
-interface ICustomersCardProps {
-  client: ICustomer;
+interface IClientsCardProps {
+  client: IClients;
+  onDelete: () => void;
+  onEdit: () => void;
 }
 
-export const CustomersCard = ({ client }: ICustomersCardProps) => {
+export const ClientsCard = ({
+  client,
+  onDelete,
+  onEdit,
+}: IClientsCardProps) => {
   const { colors, spacings } = useTheme();
   const { styles } = useStyles(stylesheet);
 
@@ -24,13 +30,8 @@ export const CustomersCard = ({ client }: ICustomersCardProps) => {
     return (
       <View style={styles.footerContainer}>
         <Icon name="plus" size={20} onPress={() => console.log('Adicionar')} />
-        <Icon name="edit" size={20} onPress={() => console.log('Editar')} />
-        <Icon
-          name="delete"
-          color={colors.error}
-          size={20}
-          onPress={() => console.log('Excluir')}
-        />
+        <Icon name="edit" size={20} onPress={onEdit} />
+        <Icon name="delete" color={colors.error} size={20} onPress={onDelete} />
       </View>
     );
   };

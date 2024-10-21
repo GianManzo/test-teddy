@@ -1,54 +1,117 @@
-import { createCustomerAPI } from '@apis/customers/customers';
+import {
+  createClientAPI,
+  IClients,
+  updateClientAPI,
+} from '@apis/clients/clients';
 import { Button, FormInput, Typography } from '@components/atoms';
 import { CurrencyInput } from '@components/atoms/CurrencyInput';
 import { useTheme } from '@contexts/theme-provider';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { customersValidator, CustomersValidator } from '@validations/customers';
-import { useState } from 'react';
-import { useForm, UseFormReset } from 'react-hook-form';
+import { ClientsValidator, clientsValidator } from '@validations/clients';
+import { useEffect } from 'react';
+import { useForm, UseFormReset, UseFormTrigger } from 'react-hook-form';
 import { Modal, TouchableOpacity, View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 import { Form } from 'tamagui';
 
-interface ICustomersCardProps {
+interface IClientsCardProps {
   showFormModal: boolean;
-  toggleModal: (reset: UseFormReset<CustomersValidator>) => void;
+  toggleModal: (
+    reset: UseFormReset<ClientsValidator>,
+    trigger: UseFormTrigger<ClientsValidator>
+  ) => void;
+  clientToEdit?: IClients | null;
+  setClients: (value: IClients[]) => void;
 }
 
-export const CustomersDrawerForm = ({
+export const ClientsDrawerForm = ({
   showFormModal,
   toggleModal,
-}: ICustomersCardProps) => {
+  clientToEdit,
+  setClients,
+}: IClientsCardProps) => {
   const { colors, spacings } = useTheme();
   const { styles } = useStyles(stylesheet);
 
   const {
-    formState: { errors, isDirty, isSubmitting, isValid },
+    formState: { errors, isValid },
     handleSubmit,
     control,
     reset,
-  } = useForm<CustomersValidator>({
-    resolver: zodResolver(customersValidator),
+    trigger,
+  } = useForm<ClientsValidator>({
+    resolver: zodResolver(clientsValidator),
     mode: 'onChange',
   });
 
+  const formatCurrency = (value: number): string => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(value);
+  };
+
+  useEffect(() => {
+    if (clientToEdit) {
+      reset({
+        name: clientToEdit?.name,
+        salary: formatCurrency(clientToEdit?.salary),
+        companyValue: formatCurrency(clientToEdit?.companyValuation),
+      });
+    } else {
+      reset({
+        name: null,
+        salary: null,
+        companyValue: null,
+      });
+    }
+    trigger();
+  }, [clientToEdit, reset]);
+
   const onSubmit = handleSubmit(async ({ name, salary, companyValue }) => {
     const removeCurrencyFormatting = (value: string) => {
-      return value.replace(/\D/g, '');
+      let cleanedValue = value.replace(',', '.');
+      cleanedValue = cleanedValue.replace(/[^0-9.]/g, '');
+      return parseFloat(cleanedValue);
     };
-    const formattedSalary = removeCurrencyFormatting(salary);
-    const formattedCompanyValue = removeCurrencyFormatting(companyValue);
+    const formattedSalary = salary && removeCurrencyFormatting(salary);
+    const formattedCompanyValue =
+      companyValue && removeCurrencyFormatting(companyValue);
     try {
-      await createCustomerAPI({
-        name,
-        salary: Number(formattedSalary),
-        companyValuation: Number(formattedCompanyValue),
-      });
+      if (clientToEdit) {
+        setClients(prevClients => {
+          const updatedClients = [...prevClients];
+          const index = updatedClients.findIndex(
+            client => client.id === clientToEdit.id
+          );
+          updatedClients[index] = {
+            ...clientToEdit,
+            name,
+            salary: Number(formattedSalary),
+            companyValuation: Number(formattedCompanyValue),
+          };
+          return updatedClients;
+        });
+        await updateClientAPI({
+          id: clientToEdit.id,
+          name,
+          salary: Number(formattedSalary),
+          companyValuation: Number(formattedCompanyValue),
+        });
+      } else {
+        await createClientAPI({
+          name,
+          salary: Number(formattedSalary),
+          companyValuation: Number(formattedCompanyValue),
+        });
+        reset();
+      }
     } catch (error) {
-      console.log(error, 'error');
+      console.error('Error:', error);
+    } finally {
+      toggleModal(reset, trigger);
+      reset();
     }
-
-    toggleModal(reset);
   });
 
   return (
@@ -56,11 +119,11 @@ export const CustomersDrawerForm = ({
       animationType="slide"
       transparent={true}
       visible={showFormModal}
-      onRequestClose={() => toggleModal(reset)}
+      onRequestClose={() => toggleModal(reset, trigger)}
     >
       <TouchableOpacity
         style={styles.modalOverlay}
-        onPress={() => toggleModal(reset)}
+        onPress={() => toggleModal(reset, trigger)}
         activeOpacity={1}
       >
         <TouchableOpacity activeOpacity={1} style={styles.drawer}>

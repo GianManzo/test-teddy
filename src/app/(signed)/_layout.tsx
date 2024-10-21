@@ -1,30 +1,17 @@
-import { Icon, Logo, Typography } from '@components/atoms';
+import { Icon } from '@components/atoms';
 import { Header } from '@components/molecules/Header';
-import { useAuth } from '@contexts/auth-provider';
-import { useTheme } from '@contexts/theme-provider';
-import { spacings } from '@design/spacings';
-import { Redirect, Tabs } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import {
-  createDrawerNavigator,
-  DrawerItemList,
-} from '@react-navigation/drawer';
-import { Image, View } from 'tamagui';
 
-import CustomersScreen from './customers';
+import { useTheme } from '@contexts/theme-provider';
+
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
 import ProductsScreen from './products';
 import HomeScreen from './home';
+import ClientsScreen from './clients';
 
 export default function SignedLayout() {
-  const { isLogged } = useAuth();
   const { colors } = useTheme();
   const Drawer = createDrawerNavigator();
-
-  const insets = useSafeAreaInsets();
-
-  // if (isLogged) {
-  //   return <Redirect href="/(signed)/customers" />;
-  // }
 
   return (
     <Drawer.Navigator
@@ -50,7 +37,7 @@ export default function SignedLayout() {
     >
       <Drawer.Screen
         name="Clientes"
-        component={CustomersScreen}
+        component={ClientsScreen}
         options={{
           drawerIcon: ({ color }) => <Icon color={color} name="customers" />,
         }}
