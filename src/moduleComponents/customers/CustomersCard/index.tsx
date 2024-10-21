@@ -1,19 +1,22 @@
+import { ICustomer } from '@apis/customers/customers';
 import { Icon, Typography } from '@components/atoms';
 import { Card } from '@components/atoms/Card';
 import { useTheme } from '@contexts/theme-provider';
 import { View } from 'react-native';
 import { createStyleSheet, useStyles } from 'react-native-unistyles';
 
-interface ICustomersCardProps {}
+interface ICustomersCardProps {
+  client: ICustomer;
+}
 
-export const CustomersCard = ({}: ICustomersCardProps) => {
+export const CustomersCard = ({ client }: ICustomersCardProps) => {
   const { colors, spacings } = useTheme();
   const { styles } = useStyles(stylesheet);
 
   const renderHeader = () => {
     return (
       <Typography fontWeight="700" variant="subTitle">
-        Eduardo
+        {client.name}
       </Typography>
     );
   };
@@ -47,9 +50,9 @@ export const CustomersCard = ({}: ICustomersCardProps) => {
     >
       <View style={styles.cardContent}>
         <Typography style={{ marginBottom: 10 }}>
-          Salário: R$3.500,00
+          Salário: R${client.salary}
         </Typography>
-        <Typography>Empresa: R$120.000,00</Typography>
+        <Typography>Empresa: R${client.companyValuation}</Typography>
       </View>
     </Card>
   );

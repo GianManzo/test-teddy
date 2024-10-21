@@ -1,3 +1,4 @@
+import { createCustomerAPI } from '@apis/customers/customers';
 import { Button, FormInput, Typography } from '@components/atoms';
 import { CurrencyInput } from '@components/atoms/CurrencyInput';
 import { useTheme } from '@contexts/theme-provider';
@@ -32,19 +33,23 @@ export const CustomersDrawerForm = ({
   });
 
   const onSubmit = handleSubmit(async ({ name, salary, companyValue }) => {
+    const removeCurrencyFormatting = (value: string) => {
+      return value.replace(/\D/g, '');
+    };
     const formattedSalary = removeCurrencyFormatting(salary);
     const formattedCompanyValue = removeCurrencyFormatting(companyValue);
-    console.log({
-      name,
-      formattedSalary,
-      formattedCompanyValue,
-    });
+    try {
+      await createCustomerAPI({
+        name,
+        salary: Number(formattedSalary),
+        companyValuation: Number(formattedCompanyValue),
+      });
+    } catch (error) {
+      console.log(error, 'error');
+    }
+
     toggleModal(reset);
   });
-
-  const removeCurrencyFormatting = (value: string) => {
-    return value.replace(/\D/g, '');
-  };
 
   return (
     <Modal

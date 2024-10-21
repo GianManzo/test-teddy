@@ -14,7 +14,10 @@ export type IListDTO = {
   [x: string]: any;
 };
 
-export type IListAPI<T> = APIResponse<{
-  meta: IMeta;
-  data: T[];
-}>;
+export type IListAPI<T, K extends string> = APIResponse<
+  {
+    meta: IMeta;
+  } & {
+    [key in K]: T[];
+  }
+>;
